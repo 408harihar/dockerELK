@@ -1,0 +1,17 @@
+filebeat.inputs:
+  - type: filestream
+    id: 2223
+    enabled: true
+    paths:
+      - '/usr/share/filebeat/ingest_data/access.log*'
+
+filebeat.modules:
+  - module: apache
+    access:
+      enabled: true
+      var.paths: ["/usr/share/filebeat/ingest_data/access.log*"]
+      var.pipeline: "filebeat-8.7.1-apache-access-pipeline" # Default pipeline for access logs
+
+
+output.logstash:
+  hosts: ["elastic-logstash01-1:5044"]

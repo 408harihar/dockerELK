@@ -1,0 +1,30 @@
+filebeat.modules:
+  - module: apache
+    access:
+      enabled: true
+      var.paths: ["/home/snort/elastic/filebeat_ingest_data/*.log"]
+      var.pipeline: "filebeat-8.7.1-apache-access-pipeline" # Default pipeline for access logs
+    error:
+      enabled: false
+
+
+
+filebeat.autodiscover:
+  providers:
+    - type: docker
+      hints.enabled: true
+
+
+processors:
+ - add_docker_metadata: ~
+
+
+setup.kibana:
+  host: ${KIBANA_HOSTS}
+  username: ${ELASTIC_USER}
+  password: ${ELASTIC_PASSWORD}
+
+
+output.logstash:
+  hosts: ["172.19.0.2:5044"]
+
